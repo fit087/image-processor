@@ -22,7 +22,6 @@ from numpy import array
 from numpy import int64
 
 def main(argv):
-#  argv = 'test-image.png'
   try:
       img = Image.open(argv[1])
       
