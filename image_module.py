@@ -114,35 +114,52 @@ def main(argv):
 
     print('This is an Image App', end = '\n\n')
 
-    img_file = Image.open('test-image.png')
+    img_file = Image.open(argv[0])
     img_mode = img_file.mode
-    print('img_mode = {}'.format(img_mode))
+
+    print('Image type: {0}'.format(img_mode), end = '\n\n')
 
     image = ImageType.factory(img_mode, img_file)
     
-    img = Image.open(argv[0])
+    avail_filters = display_available_filters(image)
+
+    chosen_filter = choose_filter(avail_filters)
+
+    parameters_list = ask_for_parameters(image, chosen_filter)
+
+    image.filters[chosen_filter].set_parameters(parameters_list)
+
+    image.filters[chosen_filter].apply_filter()
     
-    print('Image type: {0}'.format(img.mode))
+    print('Image file processed successfully!')
+
+    return 0
     
+def display_available_filters(image):
     avail_filters = list(image.available_filters())
     
     print('Available filters:')
 
-    list_of_filters=[]
-    
     for i, ifilter in zip(range(len(avail_filters)), avail_filters):
         print ('{}.  {}'.format(i+1, ifilter))
     
     print('')
-    
+    return avail_filters
+
+
+def choose_filter(avail_filters):
+
     filter_num = int(input('Type the selected filter number: '))
 
     chosen_filter = avail_filters[filter_num-1]
-
     
     print('')
     
     print('Selected Filter: {}'.format(chosen_filter))
+
+    return chosen_filter
+
+def ask_for_parameters(image, chosen_filter):
 
     parameters_list=[]
 
@@ -150,12 +167,7 @@ def main(argv):
         parameters_list.append(int(input('Type the {} {}: '.format(chosen_filter, param))))
     print('')
 
-    image.filters[chosen_filter].set_parameters(parameters_list)
-
-    image.filters[chosen_filter].apply_filter()
-    
-    print('Image file processed successfully!')
-    
+    return parameters_list
 
 if __name__ == "__main__":
     import sys
