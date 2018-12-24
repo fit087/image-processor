@@ -5,8 +5,16 @@ Created on Thu Dec 20 23:49:13 2018
 @author: adolfo
 """
 from PIL import Image
+# import Filter
+# from Filter import Filter
+
 
 class Filter:
+    def __init__(self,img):
+        self.img = img
+        # self.fn = fn
+        # self.fext = fext
+
     def apply_filter(): pass
     def set_parameters(parameters_list):pass
     @staticmethod
@@ -27,6 +35,7 @@ class Blur(Filter):
         -------
 
         """
+
         
         print('Blur filter applied')
 
@@ -39,6 +48,7 @@ class Blur(Filter):
 
 
 class RGB_split(Filter):
+
 
     def apply_filter(self):
         """Get a 3 image results of apply the filter RGB_split to the image img
@@ -55,8 +65,13 @@ class RGB_split(Filter):
             a tuple of (red,green,blue) images
         """
         
-        print('RGB split filter applied')
+        splitted_images =  self.__rgb_split_filter()
 
+       # __save(__rgb_split_filter(),fn,fext)
+        
+        print('RGB split filter applied')
+        
+        return splitted_images
 
     def set_parameters(self,parameters_list):
         return 0
@@ -64,17 +79,55 @@ class RGB_split(Filter):
     @staticmethod
     def parameters_needed():
         return []
-    
+
+    # RGB Function
+    def __rgb_split_filter(self):
+        """
+        Take only one channel of the RGB color spectrum
+        """
+      
+        img_red = self.img.copy()
+        img_green = self.img.copy()
+        img_blue = self.img.copy()
+        width, height = self.img.size
+        
+        for x in range(width):
+            for y in range(height):
+              
+                  r, g, b = self.img.getpixel((x, y))
+                
+                  img_red.putpixel((x, y), (r, 0, 0))
+                  img_green.putpixel((x, y), (0, g, 0))
+                  img_blue.putpixel((x, y), (0, 0, b))
+                  
+        return (img_red,img_green,img_blue)
+        
+    def __save(self,files,fn,fext):
+        files[0].save('{}-split-red.{}'.format(fn,fext), mode = 'P')
+        files[1].save('{}-split-green.{}'.format(fn,fext), mode = 'P')
+        files[2].save('{}-split-blue.{}'.format(fn,fext), mode = 'P')
+        return 0
+
+
+
+
 
 # Factory Pattern
 
 class ImageType:
 
-    def __init__(self, img_ref):
-        self.img_ref = img_ref
+    #def __init__(self, path):
+    def __init__(self, img):
+        #self.img_ref = Image.open(path)
+        self.img_ref = img
+        #self.fn, self.fext = __filename_separator(path)
         self.width, self.height = self.img_ref.size
-        self.mode = img_ref.mode
+#        self.mode = img_ref.mode
         self.filters = []
+
+    def __filename_separator(self,path):
+        (fn, fext) = path.split(sep='.')
+        return (fn, fext)
 
     # Create based on class name:
     @staticmethod
@@ -91,11 +144,12 @@ class ImageType:
         return "Image_str({})".format(self.img_ref)
 
 
+
 class RGBImage(ImageType):
 
     def __init__(self, img_ref):
         super( RGBImage, self ).__init__(img_ref)
-        self.filters = {"RGB split":RGB_split(),"Blur":Blur()}
+        self.filters = {"RGB split":RGB_split(img_ref),"Blur":Blur(img_ref)}
 
     def available_filters(self):
         return self.filters.keys()
@@ -168,6 +222,12 @@ def ask_for_parameters(image, chosen_filter):
     print('')
 
     return parameters_list
+
+def save(files, filenames, fn,fext):
+    img_red.save('{}-split-red.{}'.format(fn,fext), mode = 'P')
+    img_green.save('{}-split-green.{}'.format(fn,fext), mode = 'P')
+    img_blue.save('{}-split-blue.{}'.format(fn,fext), mode = 'P')
+    return 0
 
 if __name__ == "__main__":
     import sys
