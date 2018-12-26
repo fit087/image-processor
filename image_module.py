@@ -7,8 +7,6 @@ Created on Thu Dec 20 23:49:13 2018
 from PIL import Image
 from numpy import array
 from numpy import int64
-# import Filter
-# from Filter import Filter
 
 
 class Filter:
@@ -16,8 +14,6 @@ class Filter:
         self.img = img
         self.img_out = []
         self.path = path
-        # self.fn = fn
-        # self.fext = fext
 
     def apply_filter(): pass
     def set_parameters(parameters_list): pass
@@ -67,14 +63,15 @@ class Blur(Filter):
         return ('radius','weight')
 
     def save(self):
-        filename = '{0}-blur-radius{1}-weight{2}.{3}' 
+        filename = ['{0}-blur-radius{1}-weight{2}.{3}']
         fn, fext = self._filename_separator()
         fields = (fn,self.radius,self.weight,fext)
         return self._save(filename,fields)
 
-    # Blur Function
     def __blur_filter(self):
-                 
+        """
+            Blur Filter
+        """
         img_blur = self.img.copy()
         
         width, height = self.img.size
@@ -109,8 +106,6 @@ class Blur(Filter):
               
             img_blur.putpixel((x, y), blur_color)
     
-        # img_blur.save('{0}-blur-radius{2}-weight{3}.{1}'.format(fn,fext,radius,weight))
-        
         return img_blur
 
     @staticmethod
@@ -137,8 +132,6 @@ class RGB_split(Filter):
         
         self.img_out =  self.__rgb_split_filter()
 
-       # __save(__rgb_split_filter(),fn,fext)
-        
         print('RGB split filter applied')
         
         return self.img_out
@@ -305,13 +298,6 @@ def ask_for_parameters(image, chosen_filter):
     print('')
 
     return parameters_list
-
-
-def save(files, fn,fext):
-    files[0].save('{}-split-red.{}'.format(fn,fext), mode = 'P')
-    files[1].save('{}-split-green.{}'.format(fn,fext), mode = 'P')
-    files[2].save('{}-split-blue.{}'.format(fn,fext), mode = 'P')
-    return 0
 
 if __name__ == "__main__":
     import sys
