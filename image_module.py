@@ -172,25 +172,14 @@ class RGB_split(Filter):
                   
         return (img_red,img_green,img_blue)
         
-    def __save(self,files,fn,fext):
-        files[0].save('{}-split-red.{}'.format(fn,fext), mode = 'P')
-        files[1].save('{}-split-green.{}'.format(fn,fext), mode = 'P')
-        files[2].save('{}-split-blue.{}'.format(fn,fext), mode = 'P')
-        return 0
-
-
 # Factory Pattern
 
 class ImageType:
 
-    #def __init__(self, path):
     def __init__(self, img, path):
-        #self.img_ref = Image.open(path)
         self.path = path
         self.img_ref = img
-        #self.fn, self.fext = __filename_separator(path)
         self.width, self.height = self.img_ref.size
-#        self.mode = img_ref.mode
         self.filters = []
 
     def __filename_separator(self):
@@ -256,10 +245,6 @@ def main(argv):
 
     results = image.filters[chosen_filter].apply_filter()
     results = image.filters[chosen_filter].save()
-
-    #fn,fext = __filename_separator(argv[0])
-
-    #save(results,fn,fext)
 
     print('Image file processed successfully!')
 
