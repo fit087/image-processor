@@ -79,8 +79,6 @@ class Blur(Filter):
 
         self.img_out.append(blur)
         
-        print('Blur filter applied')
-
         return blur
 
     def set_parameters(self,parameters_list):
@@ -191,8 +189,6 @@ class RGB_split(Filter):
         
         self.img_out =  self.__rgb_split_filter()
 
-        print('RGB split filter applied')
-        
         return self.img_out
 
     def set_parameters(self,parameters_list):
@@ -363,10 +359,8 @@ def main(argv):
     arguments = cli_verify(argv)
 
     img_file = Image.open(arguments.filename)
-    print('362 {}'.format(arguments.filename))
-    img_mode = img_file.mode
 
-    print('Image type: {0}'.format(img_mode), end = '\n\n')
+    img_mode = img_file.mode
 
     image = ImageType.factory(img_mode, img_file,arguments.filename)
 
