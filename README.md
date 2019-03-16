@@ -1,5 +1,7 @@
 # Image Processing Project
 
+[![Build Status](https://travis-ci.org/fit087/image-processor.svg?branch=master)](https://travis-ci.org/fit087/image-processor)
+
 Image Processing currently presents 2 filters (RGB split and Blur) to apply over RGB images. 
 
 Image Processing was entirely writen in Python 3.5, using an a object-oriented aprouch making use of the imaging library Pillow, and numpy library.
