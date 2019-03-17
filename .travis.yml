@@ -15,4 +15,4 @@ install:
 # command to run tests
 script:
 #  - pytest
-  - python image_module.py
+  - python image_module.py -rgb test-image.png
